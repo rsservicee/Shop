@@ -144,7 +144,6 @@ input,select,textarea{font-family:'Hind Siliguri',sans-serif;}
 .det-thumb{width:54px;height:54px;border-radius:9px;overflow:hidden;flex-shrink:0;cursor:pointer;border:2px solid transparent;transition:border .2s;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:22px;}
 .det-thumb img{width:100%;height:100%;object-fit:contain;}
 .det-thumb.on{border-color:var(--p);}
-.det-thumb.single-only{display:none !important;}
 .det-body{background:var(--card);border-radius:20px 20px 0 0;margin-top:-16px;padding:18px 14px;flex:1;}
 .det-nm{font-size:19px;font-weight:700;color:var(--t1);}
 .det-pr{font-size:24px;font-weight:700;color:var(--p);margin:5px 0;}
@@ -261,7 +260,7 @@ input,select,textarea{font-family:'Hind Siliguri',sans-serif;}
 .oc-bot{display:flex;justify-content:space-between;align-items:center;}
 .oc-tot{font-size:14px;font-weight:700;color:var(--t1);}
 .spill{padding:3px 10px;border-radius:18px;font-size:10px;font-weight:700;display:inline-block;}
-.sp-p{background:#FFFBEB;color:#92400E;}.sp-r{background:#EFF6FF;color:#1D4ED8;}.sp-d{background:#F0FDF4;color:#166534;}.sp-x{background:#FFF1F2;color:#9F1229;}
+.sp-p{background:#FFFBEB;color:#92400E;}.sp-r{background:#EFF6FF;color:#1D4ED8;}.sp-d{background:#F0FDF4;color:#166534;}.sp-x{background:#FFF1F2;color:#9F1239;}
 
 /* ── WA FAB ── */
 .wa-fab{position:fixed;bottom:82px;right:14px;width:48px;height:48px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 18px rgba(37,211,102,.4);cursor:pointer;z-index:60;animation:wap 2.5s infinite;}
@@ -365,9 +364,10 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
 #pc-det-modal.open{display:flex;}
 #pc-det-inner{background:var(--card);border-radius:24px;max-width:900px;width:100%;max-height:90vh;overflow:hidden;display:flex;box-shadow:0 20px 60px rgba(0,0,0,.25);}
 #pc-det-img-col{width:380px;flex-shrink:0;background:#fff;display:flex;flex-direction:column;position:relative;overflow:hidden;}
-#pc-det-img-slides{display:flex;width:100%;flex:1;min-height:300px;transition:transform .4s ease;overflow:hidden;}
-.pc-det-img-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:90px;background:#fff;flex-shrink:0;}
-.pc-det-img-slide img{width:100%;height:100%;object-fit:contain;background:#fff;}
+#pc-det-img-slides{position:relative;width:100%;height:340px;flex-shrink:0;overflow:hidden;}
+.pc-det-img-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:90px;background:#fff;opacity:0;transition:opacity .3s ease;pointer-events:none;}
+.pc-det-img-slide.active{opacity:1;pointer-events:auto;}
+.pc-det-img-slide img{width:100%;height:100%;object-fit:cover;display:block;}
 #pc-det-close{position:absolute;top:12px;right:12px;width:34px;height:34px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;}
 
 /* PC detail thumbnails */
@@ -433,7 +433,6 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
   <div class="hdr">
     <div class="logo"><div class="logo-ic" id="headerLogo">🛍️</div><div class="logo-nm" id="headerName">RS Fashion <b>Frenzy</b></div></div>
     <div class="hdr-r">
-      <!-- Three Dot Button -->
       <div class="three-dot-menu">
         <button class="hbtn" id="tdmBtn" onclick="toggleTDM(event)">⋮</button>
         <div class="tdm-dropdown" id="tdmDropdown">
@@ -530,8 +529,6 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
     <div class="fg"><label>মোবাইল নম্বর *</label><input type="tel" id="oPh" placeholder="01XXXXXXXXX"></div>
     <div class="fg"><label>ডেলিভারি ঠিকানা *</label><textarea id="oAd" placeholder="বাড়ি/ফ্ল্যাট নং, রাস্তা, এলাকা, জেলা লিখুন"></textarea></div>
     <div class="fg"><label>বিশেষ নোট (ঐচ্ছিক)</label><input type="text" id="oNt" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..."></div>
-
-    <!-- PAYMENT -->
     <div class="fg" style="margin-bottom:8px;"><label>পেমেন্ট পদ্ধতি নির্বাচন করুন *</label></div>
     <div class="pay-opts">
       <div class="pay-opt" id="pay-bkash" onclick="selPay('bKash')">
@@ -559,8 +556,6 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
         <div class="pay-num">পণ্য পেয়ে দিন</div>
       </div>
     </div>
-
-    <!-- TRANSACTION BOX (shown for bKash/Nagad/Rocket) -->
     <div class="txn-box" id="txnBox">
       <div class="txn-box-hdr">
         <div class="txn-ic" id="txnIcon">💜</div>
@@ -569,7 +564,6 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
           <p>অর্ডার কনফার্ম করতে আগে পেমেন্ট করুন</p>
         </div>
       </div>
-      <!-- Send money info -->
       <div class="send-info">
         <div class="send-info-row">
           <span class="send-info-lbl">পাঠাবেন</span>
@@ -587,20 +581,17 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
           <span class="send-info-val">Send Money (Personal)</span>
         </div>
       </div>
-      <!-- Steps -->
       <div class="txn-steps" style="margin-top:12px;">
         <div class="txn-step"><div class="txn-step-num">1</div><span id="txnStep1">bKash অ্যাপ খুলুন → Send Money → উপরের নম্বরে টাকা পাঠান</span></div>
         <div class="txn-step"><div class="txn-step-num">2</div><span>পেমেন্ট সফল হলে আপনি একটি Transaction ID পাবেন</span></div>
         <div class="txn-step"><div class="txn-step-num">3</div><span>নিচে সেই Transaction ID টি লিখুন</span></div>
       </div>
-      <!-- TXN input -->
       <div class="txn-input-wrap">
         <input type="text" id="txnId" placeholder="Transaction ID লিখুন (যেমন: 8AB1C2D3E4)" oninput="onTxnInput(this.value)">
         <span class="txn-icon" id="txnInputIcon">🔑</span>
       </div>
       <div class="txn-verified" id="txnVerified">✅ Transaction ID যাচাই হয়েছে</div>
     </div>
-
     <button class="place-btn" id="placeBtn" onclick="placeOrder()">✅ অর্ডার নিশ্চিত করুন</button>
   </div>
 </div>
@@ -655,20 +646,24 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
 <div class="overlay" id="waOrderOverlay" onclick="if(event.target===this)closeWAOrderModal()">
   <div class="about-sheet" style="max-height:92vh;padding:0 0 20px;" onclick="event.stopPropagation()">
     <div class="about-handle"></div>
-    <!-- Header -->
     <div style="padding:0 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
       <div style="font-size:16px;font-weight:700;color:var(--t1);">📲 WhatsApp অর্ডার</div>
       <button onclick="closeWAOrderModal()" style="background:var(--bg);border:none;border-radius:50%;width:28px;height:28px;font-size:16px;cursor:pointer;color:var(--t2);">✕</button>
     </div>
-    <!-- Product Summary -->
     <div style="margin:12px 16px;background:var(--pl);border:1px solid #FBBCB0;border-radius:var(--r);padding:11px 13px;">
       <div style="font-size:11px;font-weight:700;color:var(--pd);margin-bottom:6px;">📦 নির্বাচিত পণ্য</div>
-      <div style="font-size:13px;font-weight:700;color:var(--t1);" id="waom-prod-name">—</div>
-      <div style="display:flex;justify-content:space-between;margin-top:5px;">
-        <span style="font-size:12px;color:var(--t2);" id="waom-prod-var"></span>
-        <div style="text-align:right;">
-          <span style="font-size:12px;color:var(--t2);">পরিমাণ: </span><span style="font-size:12px;font-weight:700;" id="waom-prod-qty">—</span>
-          <span style="margin-left:8px;font-size:14px;font-weight:700;color:var(--p);" id="waom-prod-price">—</span>
+      <!-- Selected image preview in WA modal -->
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;">
+        <div id="waom-prod-img-wrap" style="width:60px;height:60px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:28px;border:1px solid #FBBCB0;"></div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--t1);" id="waom-prod-name">—</div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;">
+            <span style="font-size:12px;color:var(--t2);" id="waom-prod-var"></span>
+            <div style="text-align:right;">
+              <span style="font-size:12px;color:var(--t2);">পরিমাণ: </span><span style="font-size:12px;font-weight:700;" id="waom-prod-qty">—</span>
+              <span style="margin-left:8px;font-size:14px;font-weight:700;color:var(--p);" id="waom-prod-price">—</span>
+            </div>
+          </div>
         </div>
       </div>
       <div style="border-top:1px dashed #FBBCB0;margin-top:7px;padding-top:6px;display:flex;justify-content:space-between;">
@@ -676,13 +671,11 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
         <span style="font-size:14px;font-weight:700;color:var(--p);" id="waom-total">—</span>
       </div>
     </div>
-    <!-- Form -->
     <div style="padding:0 16px;">
       <div class="fg"><label>আপনার নাম *</label><input type="text" id="waom-name" placeholder="পূর্ণ নাম লিখুন"></div>
       <div class="fg"><label>মোবাইল নম্বর *</label><input type="tel" id="waom-phone" placeholder="01XXXXXXXXX"></div>
       <div class="fg"><label>ডেলিভারি ঠিকানা *</label><textarea id="waom-address" placeholder="বাড়ি/ফ্ল্যাট নং, রাস্তা, এলাকা, জেলা লিখুন" style="height:65px;resize:none;width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:14px;outline:none;font-family:inherit;"></textarea></div>
       <div class="fg"><label>বিশেষ নোট (ঐচ্ছিক)</label><input type="text" id="waom-note" placeholder="কোনো বিশেষ নির্দেশনা..."></div>
-      <!-- Payment -->
       <div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:8px;">পেমেন্ট পদ্ধতি *</div>
       <div class="pay-opts">
         <div class="pay-opt" id="waom-pay-bkash" onclick="waomSelPay('bKash')">
@@ -702,7 +695,6 @@ body{max-width:100%;overflow:auto;height:auto;background:#EDEEF2;}
           <div class="pay-nm">Cash on Delivery</div><div class="pay-num">পণ্য পেয়ে দিন</div>
         </div>
       </div>
-      <!-- TXN Box for bKash/Nagad/Rocket -->
       <div class="txn-box" id="waomTxnBox">
         <div class="txn-box-hdr">
           <div class="txn-ic" id="waomTxnIcon">💜</div>
@@ -751,7 +743,6 @@ import{getDatabase,ref,set,onValue}from"https://www.gstatic.com/firebasejs/10.12
 const cfg={apiKey:"AIzaSyCjEQKeSgF2BoKesuUowh7R_KIqGe5fUhA",authDomain:"rsfashion-6de4f.firebaseapp.com",projectId:"rsfashion-6de4f",storageBucket:"rsfashion-6de4f.firebasestorage.app",messagingSenderId:"626816620866",appId:"1:626816620866:web:c9abe724a6ca9e873f90db",databaseURL:"https://rsfashion-6de4f-default-rtdb.firebaseio.com"};
 const app=initializeApp(cfg);
 const db=getFirestore(app);
-// Online presence
 try{const rtdb=getDatabase(app);const uid='u_'+Math.random().toString(36).slice(2);const pr=ref(rtdb,'presence/'+uid);set(pr,{t:Date.now()});window.addEventListener('beforeunload',()=>set(pr,null));}catch(e){}
 window.fbLoadProds=async()=>{try{const s=await getDocs(collection(db,'products'));const a=[];s.forEach(d=>a.push({id:d.id,...d.data()}));return a;}catch(e){return[];}};
 window.fbLoadBanners=async()=>{try{const s=await getDocs(collection(db,'banners'));const a=[];s.forEach(d=>a.push({id:d.id,...d.data()}));return a.filter(b=>b.active!==false);}catch(e){return[];}};
@@ -773,19 +764,19 @@ if(typeof window._fbReadyCb==='function')window._fbReadyCb();
 </script>
 
 <script>
-// ══════════ COLOR NAME (HEX → বাংলা) ══════════
+// ══════════ COLOR NAME ══════════
 const _colorMap={
   '#FF0000':'লাল','#ff0000':'লাল','#e00000':'লাল','#cc0000':'লাল','#d00000':'লাল','#b22222':'লাল',
   '#00FF00':'সবুজ','#00ff00':'সবুজ','#008000':'সবুজ','#006400':'গাঢ় সবুজ','#228B22':'গাঢ় সবুজ',
   '#0000FF':'নীল','#0000ff':'নীল','#000080':'গাঢ় নীল','#00008B':'গাঢ় নীল',
   '#FFFF00':'হলুদ','#ffff00':'হলুদ','#FFD700':'সোনালি হলুদ','#ffd700':'সোনালি হলুদ',
-  '#FF00FF':'গোলাপি-বেগুনি','#ff00ff':'গোলাপি-বেগুনি','#800080':'বেগুনি','#800080':'বেগুনি',
+  '#FF00FF':'গোলাপি-বেগুনি','#ff00ff':'গোলাপি-বেগুনি','#800080':'বেগুনি',
   '#00FFFF':'আকাশি','#00ffff':'আকাশি','#008B8B':'গাঢ় আকাশি',
   '#FFA500':'কমলা','#ffa500':'কমলা','#FF8C00':'গাঢ় কমলা',
   '#FFC0CB':'গোলাপি','#ffc0cb':'গোলাপি','#FF69B4':'গোলাপি','#ff69b4':'গোলাপি','#FF1493':'গাঢ় গোলাপি',
   '#FFFFFF':'সাদা','#ffffff':'সাদা',
-  '#000000':'কালো','#000000':'কালো',
-  '#808080':'ধূসর','#808080':'ধূসর','#A9A9A9':'ধূসর','#D3D3D3':'হালকা ধূসর',
+  '#000000':'কালো',
+  '#808080':'ধূসর','#A9A9A9':'ধূসর','#D3D3D3':'হালকা ধূসর',
   '#C0C0C0':'রুপালি','#c0c0c0':'রুপালি',
   '#A52A2A':'বাদামি','#a52a2a':'বাদামি','#8B4513':'বাদামি','#D2691E':'বাদামি','#8B0000':'গাঢ় লাল',
   '#F5F5DC':'ক্রিম','#FFFDD0':'ক্রিম','#FAEBD7':'ক্রিম',
@@ -820,16 +811,18 @@ function hexToColorName(hex){
     if(r>200&&g>100&&b<80)return'কমলা';
     if(r>180&&g<100&&b>150)return'গোলাপি-বেগুনি';
     if(r>180&&g>100&&b>150)return'গোলাপি';
-    if(r<80&&g<80&&b<80)return'কালো';
     if(Math.abs(r-g)<20&&Math.abs(g-b)<20)return lum>0.7?'হালকা ধূসর':'ধূসর';
     return hex;
   }catch(e){return hex;}
 }
+
 // ══════════ STATE ══════════
 let _prods=[];let _banners=[];let _settings={};
 let _firebaseReady=false;
 let _cart=JSON.parse(localStorage.getItem('sbd3_cart')||'[]');
 let _curDet=null;let _detQty=1;let _selSizes={};let _selSize=null;let _selColor=null;
+// ★ NEW: Track currently selected/viewed image index
+let _selDetImgIdx=0;
 let _pgHistory=['pg-home'];let _curSlide=0;let _selPay='COD';
 
 // ══════════ INIT ══════════
@@ -972,20 +965,38 @@ function quickAdd(id){
 window.quickAdd=quickAdd;
 
 // ══════════ PRODUCT DETAIL ══════════
+// ★ FIXED: goDetSlide now updates _selDetImgIdx
+function goDetSlide(n){
+  _selDetImgIdx=n;
+  document.getElementById('detImgSlides').style.transform=`translateX(-${n*100}%)`;
+  document.querySelectorAll('.det-img-dot').forEach((d,i)=>d.classList.toggle('on',i===n));
+  // Update thumbnail highlight
+  document.querySelectorAll('#detThumbs .det-thumb').forEach((t,i)=>t.classList.toggle('on',i===n));
+}
+window.goDetSlide=goDetSlide;
+
 function showDet(id){
   const p=_prods.find(x=>x.id===id);if(!p)return;
   _curDet=p;_detQty=1;_selSizes={};_selSize=null;_selColor=null;
+  // ★ Reset selected image index to 0 when opening detail
+  _selDetImgIdx=0;
+
   const imgs=p.images&&p.images.length?p.images:[null];
   document.getElementById('detImgSlides').innerHTML=imgs.map(src=>`<div class="det-img-slide">${src?`<img src="${src}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}</div>`).join('');
   document.getElementById('detImgDots').innerHTML=imgs.length>1?imgs.map((_,i)=>`<div class="det-img-dot ${i===0?'on':''}" onclick="goDetSlide(${i})"></div>`).join(''):'';
-  // Thumbnail strip
+
+  // ★ Thumbnail strip — clicking updates _selDetImgIdx
   const thumbWrap=document.getElementById('detThumbs');
   if(thumbWrap){
     if(imgs.length>1){
       thumbWrap.style.display='flex';
-      thumbWrap.innerHTML=imgs.map((src,i)=>`<div class="det-thumb${i===0?' on':''}" onclick="goDetSlide(${i});document.querySelectorAll('.det-thumb').forEach((t,ti)=>t.classList.toggle('on',ti===${i}))">${src?`<img src="${src}" alt="">`:`<span>${p.emoji||'📦'}</span>`}</div>`).join('');
-    }else{thumbWrap.style.display='none';thumbWrap.innerHTML='';}
+      thumbWrap.innerHTML=imgs.map((src,i)=>`<div class="det-thumb${i===0?' on':''}" onclick="goDetSlide(${i})">${src?`<img src="${src}" alt="">`:`<span>${p.emoji||'📦'}</span>`}</div>`).join('');
+    }else{
+      thumbWrap.style.display='none';
+      thumbWrap.innerHTML='';
+    }
   }
+
   document.getElementById('detNm').textContent=p.name;
   document.getElementById('detPr').textContent='৳'+p.price;
   document.getElementById('detOld').textContent=p.oldPrice?'৳'+p.oldPrice:'';
@@ -1005,8 +1016,6 @@ function showDet(id){
 }
 window.showDet=showDet;
 
-function goDetSlide(n){document.getElementById('detImgSlides').style.transform=`translateX(-${n*100}%)`;document.querySelectorAll('.det-img-dot').forEach((d,i)=>d.classList.toggle('on',i===n));}
-window.goDetSlide=goDetSlide;
 function toggleSize(s,el){
   if(_selSizes[s]){delete _selSizes[s];el.classList.remove('sel');}
   else{_selSizes[s]=1;el.classList.add('sel');}
@@ -1026,6 +1035,7 @@ window.selColor=selColor;
 function chQty(d){_detQty=Math.max(1,_detQty+d);document.getElementById('detQty').textContent=_detQty;}
 window.chQty=chQty;
 
+// ★ FIXED: addFromDet uses _selDetImgIdx to pick the correct image
 function addFromDet(){
   if(!_curDet)return;
   const sizes=_curDet.sizes||[];const colors=_curDet.colors||[];
@@ -1033,9 +1043,9 @@ function addFromDet(){
   if(sizes.length){
     const selected=Object.keys(_selSizes);
     if(!selected.length){alert('অনুগ্রহ করে কমপক্ষে একটি সাইজ নির্বাচন করুন।');return;}
-    selected.forEach(s=>addToCart(_curDet.id,_selSizes[s],s,_selColor));
+    selected.forEach(s=>addToCart(_curDet.id,_selSizes[s],s,_selColor,_selDetImgIdx));
   }else{
-    addToCart(_curDet.id,_detQty,null,_selColor);
+    addToCart(_curDet.id,_detQty,null,_selColor,_selDetImgIdx);
   }
   const btn=document.querySelector('.add-cart-btn');
   btn.textContent='✓ কার্টে যোগ হয়েছে!';btn.style.background='var(--ok)';btn.style.color='#fff';btn.style.border='none';
@@ -1043,6 +1053,7 @@ function addFromDet(){
 }
 window.addFromDet=addFromDet;
 
+// ★ FIXED: waDirectOrder uses _selDetImgIdx for the correct image
 function waDirectOrder(){
   if(!_curDet)return;
   const sizes=_curDet.sizes||[];const colors=_curDet.colors||[];
@@ -1053,10 +1064,16 @@ function waDirectOrder(){
   }
   const totalQty=sizes.length?Object.values(_selSizes).reduce((a,b)=>a+b,0):_detQty;
   const sizeLabel=sizes.length?Object.entries(_selSizes).map(([s,q])=>`${s}×${q}`).join(', '):null;
+  // ★ Use the selected image index
+  const imgs=_curDet.images&&_curDet.images.length?_curDet.images:[null];
+  const selectedImg=imgs[_selDetImgIdx]||imgs[0]||null;
+
   window._waOrderProduct={
     id:_curDet.id,name:_curDet.name,price:_curDet.price,
     qty:totalQty,size:sizeLabel,color:_selColor,colorName:_selColor?hexToColorName(_selColor):'',emoji:_curDet.emoji||'📦',
-    image:_curDet.images&&_curDet.images[0]||null,category:_curDet.category
+    image:selectedImg,  // ★ Selected image, not always images[0]
+    selectedImgIdx:_selDetImgIdx,
+    category:_curDet.category
   };
   openWAOrderModal();
 }
@@ -1069,11 +1086,20 @@ function openWAOrderModal(){
   const _waDelCharge=calcDelivery();
   _cart=_savedCart;
   const totalAmt=p.price*p.qty+_waDelCharge;
+
   document.getElementById('waom-prod-name').textContent=p.name;
   document.getElementById('waom-prod-price').textContent='৳'+p.price;
   document.getElementById('waom-prod-qty').textContent=p.qty+'টি';
   document.getElementById('waom-prod-var').textContent=[p.size?'সাইজ: '+p.size:'',p.color?'রঙ: '+(p.colorName||hexToColorName(p.color)):''].filter(Boolean).join(' | ')||'';
   document.getElementById('waom-total').textContent='৳'+totalAmt+' (আনুমানিক)';
+
+  // ★ Show the selected image in the WA order modal
+  const imgWrap=document.getElementById('waom-prod-img-wrap');
+  if(imgWrap){
+    if(p.image){imgWrap.innerHTML=`<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;">`;}
+    else{imgWrap.innerHTML=`<span>${p.emoji||'📦'}</span>`;}
+  }
+
   document.getElementById('waom-name').value='';
   document.getElementById('waom-phone').value='';
   document.getElementById('waom-address').value='';
@@ -1166,7 +1192,7 @@ async function placeWAOrder(){
   const orderData={
     customer:name,phone,address,note,payment:pay,transactionId:txnId,
     items:itemStr,
-    itemsDetail:[{...p}],
+    itemsDetail:[{...p}],  // ★ p.image is already the selected image
     subtotal:p.price*p.qty,delivery:deliveryAmt,total:p.price*p.qty+deliveryAmt,
     status:'Pending',orderType:'WhatsApp'
   };
@@ -1188,6 +1214,7 @@ async function placeWAOrder(){
   if(note)msg+=`📝 নোট: ${note}\n`;
   msg+=`━━━━━━━━━━━━━━━\n`;
   msg+=`📦 পণ্য:\n${itemStr}\n`;
+  if(p.image)msg+=`🖼️ ছবি: ${p.image}\n`;  // ★ Include the selected image URL in WA message
   msg+=`━━━━━━━━━━━━━━━\n`;
   msg+=`💰 সাবটোটাল: ৳${p.price*p.qty}\n`;
   msg+=`🚚 ডেলিভারি: ৳${deliveryAmt}\n`;
@@ -1202,12 +1229,31 @@ async function placeWAOrder(){
 window.placeWAOrder=placeWAOrder;
 
 // ══════════ CART ══════════
-function addToCart(id,qty,size,color){
+// ★ FIXED: addToCart now accepts imgIdx parameter to save the correct image
+function addToCart(id,qty,size,color,imgIdx){
   const p=_prods.find(x=>x.id===id);if(!p)return;
   const key=`${id}|${size||''}|${color||''}`;
+  // ★ Determine which image to use
+  const imgs=p.images&&p.images.length?p.images:[null];
+  const idx=(imgIdx!==undefined&&imgIdx!==null)?imgIdx:0;
+  const selectedImage=imgs[idx]||imgs[0]||null;
+
   const ex=_cart.find(c=>c.key===key);
-  if(ex)ex.qty+=qty;
-  else _cart.push({key,id,name:p.name,price:p.price,emoji:p.emoji||'📦',image:p.images&&p.images[0]||null,qty,size,color,colorName:color?hexToColorName(color):'',category:p.category});
+  if(ex){
+    ex.qty+=qty;
+    // ★ Update image to the newly selected one if different
+    ex.image=selectedImage;
+  }else{
+    _cart.push({
+      key,id,name:p.name,price:p.price,
+      emoji:p.emoji||'📦',
+      image:selectedImage,  // ★ Selected image
+      qty,size,color,
+      colorName:color?hexToColorName(color):'',
+      category:p.category,
+      selectedImgIdx:idx  // ★ Save the index too
+    });
+  }
   saveCart();
 }
 function saveCart(){localStorage.setItem('sbd3_cart',JSON.stringify(_cart));updateCartBadge();}
@@ -1339,7 +1385,7 @@ async function placeOrder(){
   const orderData={
     customer:name,phone,address,note,payment:_selPay,transactionId:txnId,
     items:_cart.map(i=>`${i.name} ×${i.qty}${i.size?' ['+i.size+']':''}${i.color?' ['+(i.colorName||hexToColorName(i.color))+']':''}`).join(', '),
-    itemsDetail:JSON.parse(JSON.stringify(_cart)),
+    itemsDetail:JSON.parse(JSON.stringify(_cart)),  // ★ cart items already have correct image
     subtotal:sub,delivery:del,total:sub+del,status:'Pending'
   };
   const orderId=await window.fbAddOrder(orderData);
@@ -1365,6 +1411,10 @@ function sendOrderToWA(o,id){
   if(o.note)msg+=`📝 নোট: ${o.note}\n`;
   msg+=`━━━━━━━━━━━━━━━\n`;
   msg+=`📦 পণ্য:\n${o.items}\n`;
+  // ★ Include selected images in WA message
+  if(o.itemsDetail&&o.itemsDetail.length){
+    o.itemsDetail.forEach(item=>{if(item.image)msg+=`🖼️ ছবি: ${item.image}\n`;});
+  }
   msg+=`━━━━━━━━━━━━━━━\n`;
   msg+=`💰 সাবটোটাল: ৳${o.subtotal}\n`;
   msg+=`🚚 ডেলিভারি: ৳${o.delivery}\n`;
@@ -1496,7 +1546,7 @@ window.openWAContact=openWAContact;
             <span class="pc-sec-t" id="pc-prod-title">সব পণ্য</span>
             <span class="pc-sec-sub" id="pc-prod-count"></span>
           </div>
-          <div id="pc-prod-grid"><div style="grid-column:1/-1;text-align:center;padding:60px 20px;"><div style="font-size:50px;margin-bottom:12px;">🔄</div><div style="color:var(--t3);font-size:15px;font-weight:500;">পণ্য লোড হচ্ছে...</div><div style="color:var(--t3);font-size:12px;margin-top:6px;">ইন্টারনেট সংযোগ নিশ্চিত করুন</div></div></div>
+          <div id="pc-prod-grid"><div style="grid-column:1/-1;text-align:center;padding:60px 20px;"><div style="font-size:50px;margin-bottom:12px;">🔄</div><div style="color:var(--t3);font-size:15px;font-weight:500;">পণ্য লোড হচ্ছে...</div></div></div>
         </div>
       </div>
     </div>
@@ -1587,6 +1637,10 @@ window.openWAContact=openWAContact;
 
 <script>
 const isPC=()=>window.innerWidth>=769;
+
+// ★ PC: Track selected image index separately
+let _pcSelDetImgIdx=0;
+
 function pcInit(){
   if(!isPC())return;
   document.getElementById('pc-wrap').style.display='flex';
@@ -1622,7 +1676,7 @@ function pcRenderProds(prods){
   if(!filtered.length){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--t3);font-size:15px;">কোনো পণ্য পাওয়া যায়নি</div>`;return;}
   grid.innerHTML=filtered.map(p=>{const hasImg=p.images&&p.images[0];const colors=p.colors||[];return`<div class="pc-card" onclick="pcShowDet('${p.id}')"><div class="pc-card-img">${hasImg?`<img src="${p.images[0]}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}${p.discount?`<div class="pc-disc">-${p.discount}%</div>`:''}</div>${colors.length?`<div class="pc-card-colors">${colors.slice(0,6).map(c=>`<span class="pc-cdot" style="background:${c};${c==='#FFFFFF'?'border:1.5px solid #ddd;':''}"></span>`).join('')}</div>`:'<div style="height:8px;"></div>'}<div class="pc-card-info"><div class="pc-card-nm">${p.name}</div><div class="pc-card-bot"><div><span class="pc-card-pr">৳${p.price}</span>${p.oldPrice?`<span class="pc-card-old">৳${p.oldPrice}</span>`:''}</div><button class="pc-add-btn" id="pca-${p.id}" onclick="event.stopPropagation();pcQuickAdd('${p.id}')">+ কার্ট</button></div></div></div>`;}).join('');
 }
-function pcQuickAdd(id){addToCart(id,1,null,null);pcUpdateCartBadge();const btn=document.getElementById('pca-'+id);if(btn){btn.textContent='✓ যোগ';btn.classList.add('ok');setTimeout(()=>{btn.textContent='+ কার্ট';btn.classList.remove('ok');},900);}}
+function pcQuickAdd(id){addToCart(id,1,null,null,0);pcUpdateCartBadge();const btn=document.getElementById('pca-'+id);if(btn){btn.textContent='✓ যোগ';btn.classList.add('ok');setTimeout(()=>{btn.textContent='+ কার্ট';btn.classList.remove('ok');},900);}}
 window.pcQuickAdd=pcQuickAdd;
 function pcFilterCat(cat){
   _pcActiveCat=cat;
@@ -1644,13 +1698,18 @@ function pcDoSearch(){
   grid.innerHTML=res.map(p=>{const hasImg=p.images&&p.images[0];const colors=p.colors||[];return`<div class="pc-card" onclick="pcShowDet('${p.id}')"><div class="pc-card-img">${hasImg?`<img src="${p.images[0]}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}${p.discount?`<div class="pc-disc">-${p.discount}%</div>`:''}</div>${colors.length?`<div class="pc-card-colors">${colors.slice(0,6).map(c=>`<span class="pc-cdot" style="background:${c};"></span>`).join('')}</div>`:'<div style="height:8px;"></div>'}<div class="pc-card-info"><div class="pc-card-nm">${p.name}</div><div class="pc-card-bot"><div><span class="pc-card-pr">৳${p.price}</span>${p.oldPrice?`<span class="pc-card-old">৳${p.oldPrice}</span>`:''}</div><button class="pc-add-btn" id="pca-${p.id}" onclick="event.stopPropagation();pcQuickAdd('${p.id}')">+ কার্ট</button></div></div></div>`;}).join('');
 }
 window.pcDoSearch=pcDoSearch;
+
 let _pcDet=null,_pcDetQty=1,_pcSelSizes={},_pcSelColor=null;
+
+// ★ FIXED: PC goDetSlide updates _pcSelDetImgIdx
 function pcGoDetSlide(n){
+  _pcSelDetImgIdx=n;
   const slides=document.getElementById('pc-det-img-slides');
   if(!slides)return;
-  const total=slides.children.length;
+  const all=slides.querySelectorAll('.pc-det-img-slide');
+  const total=all.length;
   const idx=(n+total)%total;
-  slides.style.transform=`translateX(-${idx*100}%)`;
+  all.forEach((s,i)=>s.classList.toggle('active',i===idx));
   document.querySelectorAll('.pc-det-thumb').forEach((t,i)=>t.classList.toggle('on',i===idx));
 }
 window.pcGoDetSlide=pcGoDetSlide;
@@ -1658,10 +1717,13 @@ window.pcGoDetSlide=pcGoDetSlide;
 function pcShowDet(id){
   const p=_prods.find(x=>x.id===id);if(!p)return;
   _pcDet=p;_pcDetQty=1;_pcSelSizes={};_pcSelColor=null;
+  // ★ Reset PC selected image index
+  _pcSelDetImgIdx=0;
+
   const imgs=p.images&&p.images.length?p.images:[null];
-  document.getElementById('pc-det-img-slides').innerHTML=imgs.map((src,i)=>`<div class="pc-det-img-slide">${src?`<img src="${src}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}</div>`).join('');
-  document.getElementById('pc-det-img-slides').style.transform='translateX(0)';
-  // Thumbnails
+  document.getElementById('pc-det-img-slides').innerHTML=imgs.map((src,i)=>`<div class="pc-det-img-slide${i===0?' active':''}">${src?`<img src="${src}" alt="${p.name}">`:`<span>${p.emoji||'📦'}</span>`}</div>`).join('');
+
+  // ★ Thumbnails — clicking updates _pcSelDetImgIdx via pcGoDetSlide
   const thumbWrap=document.getElementById('pc-det-thumbs');
   if(thumbWrap){
     if(imgs.length>1){
@@ -1672,6 +1734,7 @@ function pcShowDet(id){
       thumbWrap.innerHTML='';
     }
   }
+
   document.getElementById('pc-det-nm').textContent=p.name;
   document.getElementById('pc-det-pr').textContent='৳'+p.price;
   document.getElementById('pc-det-old').textContent=p.oldPrice?'৳'+p.oldPrice:'';
@@ -1699,20 +1762,31 @@ function pcChSizeQty(s,d){if(!_pcSelSizes[s])return;_pcSelSizes[s]=Math.max(1,(_
 window.pcChSizeQty=pcChSizeQty;
 function pcSelColor(c,el){_pcSelColor=c;document.querySelectorAll('#pc-det-color-opts .color-opt').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');}
 window.pcSelColor=pcSelColor;
+
+// ★ FIXED: PC addFromDet uses _pcSelDetImgIdx
 function pcAddFromDet(){
   if(!_pcDet)return;
   const sizes=_pcDet.sizes||[];const colors=_pcDet.colors||[];
   if(colors.length&&!_pcSelColor){alert('অনুগ্রহ করে রঙ নির্বাচন করুন।');return;}
-  if(sizes.length){const sel=Object.keys(_pcSelSizes);if(!sel.length){alert('অনুগ্রহ করে কমপক্ষে একটি সাইজ নির্বাচন করুন।');return;}sel.forEach(s=>addToCart(_pcDet.id,_pcSelSizes[s],s,_pcSelColor));}
-  else{addToCart(_pcDet.id,_pcDetQty,null,_pcSelColor);}
+  if(sizes.length){const sel=Object.keys(_pcSelSizes);if(!sel.length){alert('অনুগ্রহ করে কমপক্ষে একটি সাইজ নির্বাচন করুন।');return;}sel.forEach(s=>addToCart(_pcDet.id,_pcSelSizes[s],s,_pcSelColor,_pcSelDetImgIdx));}
+  else{addToCart(_pcDet.id,_pcDetQty,null,_pcSelColor,_pcSelDetImgIdx);}
   pcUpdateCartBadge();
   const btn=document.getElementById('pc-det-add-btn');
   btn.textContent='✓ কার্টে যোগ হয়েছে!';btn.style.background='var(--ok)';btn.style.color='#fff';btn.style.border='none';
   setTimeout(()=>{btn.textContent='🛒 কার্টে যোগ করুন';btn.style.background='';btn.style.color='';btn.style.border='';},1400);
 }
 window.pcAddFromDet=pcAddFromDet;
-function pcWaDirectOrder(){if(!_pcDet)return;_curDet=_pcDet;_detQty=_pcDetQty;_selSizes=_pcSelSizes;_selColor=_pcSelColor;waDirectOrder();}
+
+// ★ FIXED: PC waDirectOrder uses _pcSelDetImgIdx
+function pcWaDirectOrder(){
+  if(!_pcDet)return;
+  // Sync PC state to mobile state for WA order modal
+  _curDet=_pcDet;_detQty=_pcDetQty;_selSizes=_pcSelSizes;_selColor=_pcSelColor;
+  _selDetImgIdx=_pcSelDetImgIdx;  // ★ Sync the selected image index
+  waDirectOrder();
+}
 window.pcWaDirectOrder=pcWaDirectOrder;
+
 function pcUpdateCartBadge(){const c=_cart.reduce((s,i)=>s+i.qty,0);const el=document.getElementById('pc-cbadge');if(el)el.textContent=c;}
 function pcOpenCart(){pcRenderCart();document.getElementById('pc-cart-panel').classList.add('open');document.getElementById('pc-cart-overlay').classList.add('open');document.body.style.overflow='hidden';}
 window.pcOpenCart=pcOpenCart;
@@ -1759,7 +1833,10 @@ async function pcPlaceOrder(){
   const sub=_cart.reduce((s,i)=>s+i.price*i.qty,0);const del=calcDelivery();
   const txnId=['bKash','Nagad','Rocket'].includes(_pcSelPay)?document.getElementById('pc-txnId').value.trim():'';
   const btn=document.getElementById('pc-placeBtn');btn.textContent='⏳ অর্ডার দেওয়া হচ্ছে...';btn.disabled=true;
-  const orderData={customer:name,phone,address,note,payment:_pcSelPay,transactionId:txnId,items:_cart.map(i=>`${i.name} ×${i.qty}${i.size?' ['+i.size+']':''}${i.color?' ['+(i.colorName||hexToColorName(i.color))+']':''}`).join(', '),itemsDetail:JSON.parse(JSON.stringify(_cart)),subtotal:sub,delivery:del,total:sub+del,status:'Pending'};
+  const orderData={customer:name,phone,address,note,payment:_pcSelPay,transactionId:txnId,
+    items:_cart.map(i=>`${i.name} ×${i.qty}${i.size?' ['+i.size+']':''}${i.color?' ['+(i.colorName||hexToColorName(i.color))+']':''}`).join(', '),
+    itemsDetail:JSON.parse(JSON.stringify(_cart)),  // ★ already has correct images
+    subtotal:sub,delivery:del,total:sub+del,status:'Pending'};
   const orderId=await window.fbAddOrder(orderData);
   const local=JSON.parse(localStorage.getItem('sbd3_orders')||'[]');local.unshift({...orderData,id:orderId,createdAt:new Date().toISOString()});localStorage.setItem('sbd3_orders',JSON.stringify(local));
   sendOrderToWA(orderData,orderId);
@@ -1779,7 +1856,20 @@ async function pcOpenOrders(){
   const orders=JSON.parse(localStorage.getItem('sbd3_orders')||'[]');
   if(!orders.length){body.innerHTML=`<div style="text-align:center;padding:50px;"><div style="font-size:60px;">📦</div><p style="color:var(--t2);margin-top:12px;font-size:15px;">এখনো কোনো অর্ডার করেননি</p></div>`;return;}
   const sc={Pending:'sp-p',Processing:'sp-r',Done:'sp-d',Cancelled:'sp-x'};const sb={Pending:'পেন্ডিং',Processing:'প্রসেসিং',Done:'সম্পন্ন',Cancelled:'বাতিল'};
-  body.innerHTML=orders.map(o=>`<div class="ocard" style="margin:0 0 10px;"><div class="oc-top"><span class="oc-id">#${o.id.slice(-8).toUpperCase()}</span><span class="oc-dt">${new Date(o.createdAt||Date.now()).toLocaleDateString('bn-BD')}</span></div><div class="oc-items">${o.items}</div><div class="oc-bot"><span class="oc-tot">৳${o.total}</span><span class="spill ${sc[o.status]||'sp-p'}">${sb[o.status]||'পেন্ডিং'}</span></div></div>`).join('');
+  body.innerHTML=orders.map(o=>{
+    const firstImg=o.itemsDetail&&o.itemsDetail[0]&&o.itemsDetail[0].image?o.itemsDetail[0].image:null;
+    const firstEmoji=o.itemsDetail&&o.itemsDetail[0]&&o.itemsDetail[0].emoji?o.itemsDetail[0].emoji:'📦';
+    return`<div class="ocard" style="margin:0 0 10px;">
+      <div class="oc-top"><span class="oc-id">#${o.id.slice(-8).toUpperCase()}</span><span class="oc-dt">${new Date(o.createdAt||Date.now()).toLocaleDateString('bn-BD')}</span></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+        <div style="width:50px;height:50px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;">
+          ${firstImg?`<img src="${firstImg}" alt="" style="width:100%;height:100%;object-fit:contain;">`:`<span>${firstEmoji}</span>`}
+        </div>
+        <div class="oc-items" style="margin-bottom:0;">${o.items}</div>
+      </div>
+      <div class="oc-bot"><span class="oc-tot">৳${o.total}</span><span class="spill ${sc[o.status]||'sp-p'}">${sb[o.status]||'পেন্ডিং'}</span></div>
+    </div>`;
+  }).join('');
 }
 window.pcOpenOrders=pcOpenOrders;
 function pcCloseOrders(){document.getElementById('pc-orders-modal').classList.remove('open');document.body.style.overflow='';}
@@ -1788,15 +1878,12 @@ window.addEventListener('resize',()=>{
   if(isPC()){document.getElementById('pc-wrap').style.display='flex';if(_prods&&_prods.length)pcRenderProds(_prods);pcRenderBanners();pcUpdateCartBadge();if(_settings&&Object.keys(_settings).length)pcApplySettings();}
   else{document.getElementById('pc-wrap').style.display='none';}
 });
-// Auto-init after firebase loads
 const _origStartInit=window.startInit;
 window.startInit=function(){if(_origStartInit)_origStartInit();setTimeout(()=>{if(isPC())pcInit();},400);};
 if(window._fbReady&&isPC()){setTimeout(pcInit,400);}
-// PC কে আলাদাভাবে init করো — Firebase ছাড়াও banner ও layout দেখাবে
 document.addEventListener('DOMContentLoaded',()=>{
   if(!isPC())return;
   document.getElementById('pc-wrap').style.display='flex';
-  // Demo banners সাথে সাথে দেখাও
   if(!_banners||!_banners.length){
     _banners=[
       {id:'b1',tag:'বিশেষ অফার',title:'ঈদ সেল!',sub:'50% পর্যন্ত ছাড়',btn:'কিনুন',emoji:'🎁',c1:'#E8472A',c2:'#F07B65'},
